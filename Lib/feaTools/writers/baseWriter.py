@@ -56,6 +56,9 @@ class AbstractFeatureWriter(object):
 
     def subtableBreak(self):
         pass
+    
+    def passFeatureNames(self, featureNameBlock):
+        pass
 
     def rawText(self, text):
         pass

@@ -196,6 +196,10 @@ class FDKSyntaxFeatureWriter(AbstractFeatureWriter):
     def subtableBreak(self):
         t = "subtable;"
         self._instructions.append(t)
+        
+    def passFeatureNames(self, featureNameBlock):
+        t = "featureNames%s" % featureNameBlock
+        self._instructions.append(t)
 
     def rawText(self, text):
         self._instructions.append(text)

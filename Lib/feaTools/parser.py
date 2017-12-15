@@ -266,7 +266,7 @@ lookupflagRE = re.compile(
 featureNamesRE = re.compile(
         "([\s;\{\}]|^)"        # whitepace, ; {, } or start of line
         "featureNames"         # featureNames
-        "[\S\s]*?}\s*;"        # everything up until }; with whitespace
+        "([\S\s]*?}\s*;)"      # everything up until }; with whitespace
         )
 
 
@@ -412,8 +412,9 @@ def _parseUnknown(writer, text):
         writer.subtableBreak()
     ## extract all featureNames
     featureNames = featureNamesRE.findall(text)
-    for precedingMark in featureNames:
+    for precedingMark, featureNameBlock in featureNames:
         text = _executeSimpleSlice(precedingMark, text, featureNamesRE, writer)
+        writer.passFeatureNames(featureNameBlock)
     # empty instructions
     terminators = terminatorRE.findall(text)
     for terminator in terminators:
@@ -653,7 +654,7 @@ def parseFeatures(writer, text):
     # (an alternative approach would be to escape the strings.
     # the problem is that a string could contain parsable text
     # that would fool the parsing algorithm.)
-    text = stringRE.sub("", text)
+    #text = stringRE.sub("", text)
     # strip the comments
     text = commentRE.sub("", text)
     # make sure there is a space after all ;
